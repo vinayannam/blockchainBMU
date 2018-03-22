@@ -1,0 +1,19 @@
+{
+  "name": "blockchain-server",
+  "version": "1.0.0",
+  "description": "A blockchain for BMU",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vinayannam/blockchainBMU.git"
+  },
+  "author": "Vinay",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vinayannam/blockchainBMU/issues"
+  },
+  "homepage": "https://github.com/vinayannam/blockchainBMU#readme"
+}
