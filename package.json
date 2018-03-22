@@ -1,19 +1,36 @@
 {
-  "name": "blockchain-server",
-  "version": "1.0.0",
-  "description": "A blockchain for BMU",
-  "main": "app.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/vinayannam/blockchainBMU.git"
-  },
-  "author": "Vinay",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/vinayannam/blockchainBMU/issues"
-  },
-  "homepage": "https://github.com/vinayannam/blockchainBMU#readme"
+    "name": "blockchain-server",
+    "version": "1.0.0",
+    "description": "A blockchain for BMU",
+    "main": "app.js",
+    "scripts": {
+        "start": "node app.js",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/vinayannam/blockchainBMU.git"
+    },
+    "author": "Vinay",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/vinayannam/blockchainBMU/issues"
+    },
+    "homepage": "https://github.com/vinayannam/blockchainBMU#readme",
+    "dependencies": {
+        "bcryptjs": "*",
+        "body-parser": "*",
+        "connect-flash": "*",
+        "cookie-parser": "^1.4.1",
+        "express": "*",
+        "express-handlebars": "*",
+        "express-messages": "*",
+        "express-session": "*",
+        "express-validator": "*",
+        "mongodb": "*",
+        "mongoose": "*",
+        "passport": "*",
+        "passport-http": "*",
+        "passport-local": "*"
+    }
 }
