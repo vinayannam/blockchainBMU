@@ -16,14 +16,18 @@ var db = mongoose.connection;
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
+var bank = require('./routes/bank');
+var miners = require('./routes/miners');
 
 // Init App
 var app = express();
+app.enable('trust proxy')
 
 // View Engine
 app.set('views', path.join(__dirname, 'views'));
 app.engine('handlebars', exphbs({ defaultLayout: 'layout' }));
 app.set('view engine', 'handlebars');
+
 
 // BodyParser Middleware
 app.use(bodyParser.json());
@@ -78,6 +82,8 @@ app.use(function(req, res, next) {
 
 app.use('/', routes);
 app.use('/users', users);
+app.use('/bank', bank);
+app.use('/miners', miners);
 
 // Set Port
 app.set('port', (process.env.PORT || 3000));
