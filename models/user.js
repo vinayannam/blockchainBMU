@@ -9,7 +9,14 @@ var UserSchema = mongoose.Schema({
     },
     password: {
         type: String
-    }
+    },
+    publicKey: {
+        type: String
+    },
+    privateKey: {
+        type: String
+    },
+
 });
 
 var User = module.exports = mongoose.model('User', UserSchema);

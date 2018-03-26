@@ -1,27 +1,25 @@
 var express = require('express');
 var router = express.Router();
+var EC = require('elliptic').ec;
+var ec = new EC('secp256k1');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 
 var User = require('../models/user');
 
-// Register
 router.get('/register', function(req, res) {
     res.render('register');
 });
 
-// Login
 router.get('/login', function(req, res) {
     res.render('login');
 });
 
-// Register User
 router.post('/register', function(req, res) {
     var username = req.body.username;
     var password = req.body.password;
     var password2 = req.body.password2;
 
-    // Validation
     req.checkBody('username', 'Username is required').notEmpty();
     req.checkBody('password', 'Password is required').notEmpty();
     req.checkBody('password2', 'Passwords do not match').equals(req.body.password);
@@ -33,9 +31,14 @@ router.post('/register', function(req, res) {
             errors: errors
         });
     } else {
+        var keypair = ec.genKeyPair();
+        var prv = keypair.getPrivate('hex');
+        var pub = keypair.getPublic('hex');
         var newUser = new User({
             username: username,
-            password: password
+            password: password,
+            publicKey: pub,
+            privateKey: prv
         });
 
         User.createUser(newUser, function(err, user) {

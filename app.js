@@ -19,36 +19,30 @@ var users = require('./routes/users');
 var bank = require('./routes/bank');
 var miners = require('./routes/miners');
 
-// Init App
 var app = express();
 app.enable('trust proxy')
+var io = require('socket.io')(3100);
 
-// View Engine
 app.set('views', path.join(__dirname, 'views'));
 app.engine('handlebars', exphbs({ defaultLayout: 'layout' }));
 app.set('view engine', 'handlebars');
 
 
-// BodyParser Middleware
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-// Set Static Folder
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Express Session
 app.use(session({
     secret: 'secret',
     saveUninitialized: true,
     resave: true
 }));
 
-// Passport init
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Express Validator
 app.use(expressValidator({
     errorFormatter: function(param, msg, value) {
         var namespace = param.split('.'),
@@ -66,10 +60,8 @@ app.use(expressValidator({
     }
 }));
 
-// Connect Flash
 app.use(flash());
 
-// Global Vars
 app.use(function(req, res, next) {
     res.locals.success_msg = req.flash('success_msg');
     res.locals.error_msg = req.flash('error_msg');
@@ -78,16 +70,42 @@ app.use(function(req, res, next) {
     next();
 });
 
-
-
 app.use('/', routes);
 app.use('/users', users);
 app.use('/bank', bank);
 app.use('/miners', miners);
 
-// Set Port
 app.set('port', (process.env.PORT || 3000));
 
 app.listen(app.get('port'), function() {
-    console.log('Server started on port ' + app.get('port'));
+    console.log('User server started on port ' + app.get('port'));
+    console.log('Miner server started on port ' + 3100);
+});
+
+var Transaction = require('./models/transaction');
+var Miner = require('./models/miner');
+
+var online = [];
+
+io.on('connection', function(socket) {
+    var address = socket.handshake.address;
+    var ip = address.split(':')[address.split(':').length - 1];
+    Miner.getAllMiners(function(err, miners) {
+        miners.forEach(function(miner) {
+            if (ip == miner.ipaddress) {
+                console.log("Miner " + ip + " is connected");
+                online.push(socket);
+                console.log("Miners online: " + online.length);
+                Transaction.getAllTransactions(function(err, transactions) {
+                    socket.emit('transaction', { transactions: transactions });
+                });
+            }
+        });
+    });
+    socket.on('disconnect', function() {
+        console.log('Miner ' + ip + ' got disconnected!');
+        var i = online.indexOf(socket);
+        online.splice(i, 1);
+        console.log("Miners online: " + online.length);
+    });
 });

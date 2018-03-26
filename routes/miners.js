@@ -13,6 +13,7 @@ router.get('/register', function(req, res) {
 
 router.post('/register', function(req, res) {
     var ip = req.ip.split(':')[req.ip.split(':').length - 1];
+    console.log(ip);
     Miner.getAllMiners(function(err, miners) {
         var flag = 0;
         miners.forEach(function(miner) {
@@ -33,20 +34,6 @@ router.post('/register', function(req, res) {
             req.flash('error_msg', 'Miner already registered.');
             res.redirect('/users/login');
         }
-    });
-});
-
-// Send Transaction
-router.post('/mine', function(req, res) {
-    var ip = req.body.ip;
-    Miner.getAllMiners(function(err, miners) {
-        miners.forEach(function(miner) {
-            if (ip == miner.ipaddress) {
-                Transaction.getAllTransactions(function(err, transactions) {
-                    res.json(transactions);
-                });
-            }
-        });
     });
 });
 

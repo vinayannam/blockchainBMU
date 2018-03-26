@@ -1,0 +1,29 @@
+ <h2 class="page-header">Recieve Money</h2>
+ {{#if errors}}
+      {{#each errors}}
+        <div class="alert alert-danger">{{msg}}</div>
+      {{/each}}
+{{/if}}
+ <div class="form-group">
+    <label>Public Key</label>
+    <p style="word-wrap: break-word; color:dodgerblue;">{{publicKey}}</p>
+</div>
+
+{{#each transactions}}
+ <form method="post" action="/bank/recieve">
+  <div class="form-group">
+    <label>{{number}}. Sender Public Key</label>
+    <p style="word-wrap: break-word; color:darksalmon;">{{sender}}</p>
+    </div>
+    <div class="form-group">
+        <input type="hidden" name="sign" value="{{sign}}">
+    </div>
+  <div class="form-group">
+    <label>Amount</label>
+    <input type="number" class="form-control" placeholder="Amount" name="amount">
+  </div>
+  <button type="submit" class="btn btn-default">Verify</button>
+  <div style="height:10px;"class="form-group">
+  </div>
+</form>
+{{/each}}

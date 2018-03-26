@@ -8,12 +8,16 @@ var TransactionSchema = mongoose.Schema({
         index: true
     },
     reciever: {
-        type: String,
-        index: true
+        type: String
     },
     amount: {
-        type: String,
-        index: true
+        type: String
+    },
+    sign: {
+        type: String
+    },
+    verified: {
+        type: Boolean
     }
 });
 
